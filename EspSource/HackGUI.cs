@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Cheat
-{
 	// Token: 0x02000007 RID: 7
 	public class HackGUI : MonoBehaviour
 	{
@@ -344,4 +342,3 @@ namespace Cheat
 		// Token: 0x040000AC RID: 172
 		private bool OpenClose;
 	}
-}
