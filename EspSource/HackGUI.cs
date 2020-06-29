@@ -40,14 +40,7 @@ using UnityEngine;
 			Vars._ESPLine = GUILayout.Toggle(Vars._ESPLine, "ESP Line", new GUILayoutOption[0]);
 			HackGUI._espBox = GUILayout.Toggle(HackGUI._espBox, "Esp Box", new GUILayoutOption[0]);
 			HackGUI._espInfo = GUILayout.Toggle(HackGUI._espInfo, "ESP Info", new GUILayoutOption[0]);
-			if (!string.IsNullOrEmpty(HackGUI.str1) && HackGUI.str1.Contains("Unlocked"))
-			{
-				Vars.telekill = GUILayout.Toggle(Vars.telekill, "Telekill", new GUILayoutOption[0]);
-			}
-			else
-			{
-				GUILayout.Label("<color=red>Telekill</color>\n{works on a random day}", new GUILayoutOption[0]);
-			}
+		        Vars.telekill = GUILayout.Toggle(Vars.telekill, "Telekill", new GUILayoutOption[0]);
 			if (GUILayout.Button("Esp Settings", new GUILayoutOption[0]))
 			{
 				this._ShowS = !this._ShowS;
