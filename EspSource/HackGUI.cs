@@ -43,7 +43,7 @@ namespace Cheat
 		private void Hackwindow(int window)
 		{
 			this.editScrollPosition = GUILayout.BeginScrollView(this.editScrollPosition, new GUILayoutOption[0]);
-			this._espLine = GUILayout.Toggle(this._espLine, "ESP DrawLine", new GUILayoutOption[0]);
+			this._espLine = GUILayout.Toggle(this._espLine, "ESP Line", new GUILayoutOption[0]);
 			this._espBox = GUILayout.Toggle(this._espBox, "ESP Box", new GUILayoutOption[0]);
 			this._espInfo = GUILayout.Toggle(this._espInfo, "ESP Info", new GUILayoutOption[0]);
 			this._telekill = GUILayout.Toggle(this._telekill, "TeleKill", new GUILayoutOption[0]);
