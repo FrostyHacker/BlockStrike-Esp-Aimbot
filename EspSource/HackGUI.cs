@@ -178,7 +178,6 @@ namespace Cheat
 						{
 							float num3 = 1000f;
 							Vector3 vector8 = Camera.main.WorldToScreenPoint(this.enemy[i].transform.position);
-							new Vector2(vector8.x, (float)Screen.height - vector8.y);
 							float num4 = Mathf.Abs(Vector2.Distance(new Vector2((float)(Screen.width / 2), (float)(Screen.height / 2)), new Vector2(vector8.x, (float)Screen.height - vector8.y)));
 							if (num4 <= this._aimbotfov && num4 < num3)
 							{
