@@ -249,11 +249,8 @@ namespace Cheat
 		// Token: 0x0600013D RID: 317
 		public void Update()
 		{
-			if (this.Player == null && this.enemy == null)
-			{
-				this.Player = GameObject.FindGameObjectWithTag("Player").transform;
-				this.enemy = UnityEngine.Object.FindObjectsOfType<PlayerSkin>();
-			}
+			this.Player = GameObject.FindGameObjectWithTag("Player").transform;
+			this.enemy = UnityEngine.Object.FindObjectsOfType<PlayerSkin>();
 		}
 
 		// Token: 0x04000294 RID: 660
