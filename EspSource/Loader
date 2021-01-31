@@ -1,0 +1,27 @@
+using System;
+using UnityEngine;
+
+namespace Cheat
+{
+	// Token: 0x02000004 RID: 4
+	public static class Loader
+	{
+		// Token: 0x06000009 RID: 9
+		public static void Load()
+		{
+			if (!Loader.HackAdd)
+			{
+				Loader.obj = new GameObject("ModByFrosty");
+				Loader.obj.AddComponent<HackGUI>();
+				UnityEngine.Object.DontDestroyOnLoad(Loader.obj);
+				Loader.HackAdd = true;
+			}
+		}
+
+		// Token: 0x0400003C RID: 60
+		public static GameObject obj;
+
+		// Token: 0x0400003D RID: 61
+		private static bool HackAdd;
+	}
+}
