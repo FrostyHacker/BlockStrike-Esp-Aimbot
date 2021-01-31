@@ -6,7 +6,7 @@ namespace Cheat
 	// Token: 0x0200001B RID: 27
 	public class HackGUI : MonoBehaviour
 	{
-		// Token: 0x06000132 RID: 306
+		// Token: 0x06000031 RID: 49
 		public void OnGUI()
 		{
 			GUI.color = Color.red;
@@ -39,7 +39,7 @@ namespace Cheat
 			}
 		}
 
-		// Token: 0x06000133 RID: 307
+		// Token: 0x06000032 RID: 50
 		private void Hackwindow(int window)
 		{
 			this.editScrollPosition = GUILayout.BeginScrollView(this.editScrollPosition, new GUILayoutOption[0]);
@@ -56,7 +56,7 @@ namespace Cheat
 			GUILayout.EndScrollView();
 		}
 
-		// Token: 0x06000134 RID: 308
+		// Token: 0x06000033 RID: 51
 		public HackGUI()
 		{
 			this._aimbotspeed = 8f;
@@ -69,14 +69,14 @@ namespace Cheat
 			this._aimbotY = 1f;
 		}
 
-		// Token: 0x06000135 RID: 309
+		// Token: 0x06000034 RID: 52
 		private bool IsVisible(Vector3 Position)
 		{
 			RaycastHit raycastHit;
 			return !Physics.Linecast(PlayerInput.instance.FPCamera.transform.position, Position, out raycastHit);
 		}
 
-		// Token: 0x06000136 RID: 310
+		// Token: 0x06000035 RID: 53
 		private void DrawLine(Vector2 start, Vector2 end, Color color)
 		{
 			Application.targetFrameRate = 100000;
@@ -99,7 +99,7 @@ namespace Cheat
 			GL.End();
 		}
 
-		// Token: 0x06000137 RID: 311
+		// Token: 0x06000036 RID: 54
 		private void DrawRectangle(Rect rect, Color color)
 		{
 			Vector3 v = new Vector3(rect.x, rect.y, 0f);
@@ -112,18 +112,19 @@ namespace Cheat
 			this.DrawLine(v4, v, color);
 		}
 
-		// Token: 0x06000138 RID: 312
+		// Token: 0x06000037 RID: 55
 		private void Esp()
 		{
 			for (int i = 0; i < this.enemy.Length; i++)
 			{
-				if (this.Player != null && this.enemy[i] != null)
+				if (this.Player != null && this.enemy[i] != null && !this.enemy[i].Controller.photonView.isMine)
 				{
 					Color color = (this.enemy[i].PlayerTeam == Team.Blue) ? Color.blue : Color.red;
 					if (!this.enemy[i].Dead && PlayerInput.instance.PlayerTeam != this.enemy[i].PlayerTeam)
 					{
 						Rect rect = default(Rect);
 						Vector3 vector = this.enemy[i].transform.position;
+						Vector3 localPlayerPos = this.Player.transform.position;
 						Vector3 vector2 = vector;
 						vector2.y += 1.8f;
 						vector = Camera.main.WorldToScreenPoint(vector);
@@ -154,20 +155,13 @@ namespace Cheat
 							}
 							if (this._espInfo)
 							{
-								Vector3 position2 = this.Player.transform.position;
-								Vector3 position3 = this.enemy[i].transform.position;
-								Vector3 position4 = this.enemy[i].transform.position + new Vector3(0f, 2f, 0f);
-								Vector3 vector7 = Camera.main.WorldToScreenPoint(position4);
-								if (vector7.z > 0f)
+								this.DrawText(17, new Rect(rect.x, rect.top, 200f, 20f), string.Concat(new object[]
 								{
-									this.DrawText(17, new Rect(vector7.x, (float)Screen.height - vector7.y, 200f, 20f), string.Concat(new object[]
-									{
-										this.enemy[i].Controller.photonView.name,
-										" | ",
-										(int)Vector3.Distance(position2, position3),
-										" M"
-									}), color, FontStyle.Normal);
-								}
+									this.enemy[i].Controller.photonView.name,
+									" | ",
+									(int)Vector3.Distance(localPlayerPos, this.enemy[i].transform.position),
+									" M"
+								}), color, FontStyle.Normal);
 							}
 						}
 						if (this._telekill)
@@ -177,20 +171,20 @@ namespace Cheat
 						if (this._aimbot)
 						{
 							float num3 = 1000f;
-							Vector3 vector8 = Camera.main.WorldToScreenPoint(this.enemy[i].transform.position);
-							float num4 = Mathf.Abs(Vector2.Distance(new Vector2((float)(Screen.width / 2), (float)(Screen.height / 2)), new Vector2(vector8.x, (float)Screen.height - vector8.y)));
+							Vector3 vector7 = Camera.main.WorldToScreenPoint(this.enemy[i].transform.position);
+							float num4 = Mathf.Abs(Vector2.Distance(new Vector2((float)(Screen.width / 2), (float)(Screen.height / 2)), new Vector2(vector7.x, (float)Screen.height - vector7.y)));
 							if (num4 <= this._aimbotfov && num4 < num3)
 							{
 								if (this._aimVisibleOnly)
 								{
 									if (this.IsVisible(this.enemy[i].transform.position))
 									{
-										this.LookAtEnemy(this.enemy[i], this._aimbotspeed, this._aimbotY);
+										this.LookAtEnemy(this.enemy[i].transform, this._aimbotspeed, this._aimbotY);
 									}
 								}
 								else
 								{
-									this.LookAtEnemy(this.enemy[i], this._aimbotspeed, this._aimbotY);
+									this.LookAtEnemy(this.enemy[i].transform, this._aimbotspeed, this._aimbotY);
 								}
 							}
 						}
@@ -199,7 +193,7 @@ namespace Cheat
 			}
 		}
 
-		// Token: 0x06000139 RID: 313
+		// Token: 0x06000038 RID: 56
 		public void DrawCircle(Vector2 Pos, float radius, Color color)
 		{
 			double pi = 3.1415926535;
@@ -211,7 +205,7 @@ namespace Cheat
 			}
 		}
 
-		// Token: 0x0600013A RID: 314
+		// Token: 0x06000039 RID: 57
 		private void DrawText(int fontsize, Rect pos, string info, Color color, FontStyle fontstyle)
 		{
 			GUI.Label(pos, info, new GUIStyle
@@ -225,7 +219,7 @@ namespace Cheat
 			});
 		}
 
-		// Token: 0x0600013B RID: 315
+		// Token: 0x0600003A RID: 58
 		private void AimBotSettings(int window)
 		{
 			GUILayout.Label(string.Format("Aimbot Fov: {0}", this._aimbotfov), new GUILayoutOption[0]);
@@ -238,82 +232,85 @@ namespace Cheat
 			GUI.DragWindow();
 		}
 
-		// Token: 0x0600013C RID: 316
-		public void LookAtEnemy(PlayerSkin enemy, float aimSpeed, float aimY)
+		// Token: 0x0600003C RID: 60
+		public void Update()
 		{
-			Quaternion to = Quaternion.LookRotation((enemy.transform.position + new Vector3(0f, aimY, 0f) - PlayerInput.instance.FPCamera.transform.position).normalized);
+			if (PhotonNetwork.inRoom)
+			{
+				this.Player = GameObject.FindGameObjectWithTag("Player").transform;
+				this.enemy = UnityEngine.Object.FindObjectsOfType<PlayerSkin>();
+			}
+		}
+
+		// Token: 0x06000106 RID: 262
+		public void LookAtEnemy(Transform enemy, float aimSpeed, float aimY)
+		{
+			Quaternion to = Quaternion.LookRotation((enemy.position + new Vector3(0f, aimY, 0f) - PlayerInput.instance.FPCamera.transform.position).normalized);
 			PlayerInput.instance.FPCamera.transform.rotation = Quaternion.Slerp(PlayerInput.instance.FPCamera.transform.rotation, to, Time.deltaTime * aimSpeed);
 			PlayerInput.instance.FPCamera.SetRotation(PlayerInput.instance.FPCamera.transform.eulerAngles, true, true);
 		}
 
-		// Token: 0x0600013D RID: 317
-		public void Update()
-		{
-			this.Player = GameObject.FindGameObjectWithTag("Player").transform;
-			this.enemy = UnityEngine.Object.FindObjectsOfType<PlayerSkin>();
-		}
-
-		// Token: 0x04000294 RID: 660
+		// Token: 0x04000088 RID: 136
 		private Rect _GUIrect;
 
-		// Token: 0x04000295 RID: 661
+		// Token: 0x04000089 RID: 137
 		private bool _ShowGUI;
 
-		// Token: 0x04000296 RID: 662
+		// Token: 0x0400008A RID: 138
 		private bool _espInfo;
 
-		// Token: 0x04000297 RID: 663
+		// Token: 0x0400008B RID: 139
 		private bool _espBox;
 
-		// Token: 0x04000298 RID: 664
+		// Token: 0x0400008C RID: 140
 		public static HackGUI instane;
 
-		// Token: 0x04000299 RID: 665
+		// Token: 0x0400008D RID: 141
 		private Rect _Coterect;
 
-		// Token: 0x0400029A RID: 666
+		// Token: 0x0400008E RID: 142
 		private Vector2 editScrollPosition;
 
-		// Token: 0x0400029B RID: 667
+		// Token: 0x0400008F RID: 143
 		private Transform Player;
 
-		// Token: 0x0400029C RID: 668
+		// Token: 0x04000090 RID: 144
 		private bool _ShowS;
 
-		// Token: 0x0400029D RID: 669
+		// Token: 0x04000091 RID: 145
 		private bool _ShowE;
 
-		// Token: 0x0400029E RID: 670
+		// Token: 0x04000092 RID: 146
 		private int lineStyle;
 
-		// Token: 0x0400029F RID: 671
-		private PlayerSkin[] enemy;
-
-		// Token: 0x040002A0 RID: 672
+		// Token: 0x04000094 RID: 148
 		private bool OpenClose;
 
-		// Token: 0x040002A1 RID: 673
+		// Token: 0x04000095 RID: 149
 		private bool _telekill;
 
-		// Token: 0x040002A2 RID: 674
+		// Token: 0x04000096 RID: 150
 		private bool _espLine;
 
-		// Token: 0x040002A3 RID: 675
+		// Token: 0x04000097 RID: 151
 		private bool _aimbot;
 
-		// Token: 0x040002A4 RID: 676
+		// Token: 0x04000098 RID: 152
 		private Material LineMat;
 
-		// Token: 0x040002A5 RID: 677
+		// Token: 0x04000099 RID: 153
 		public float _aimbotfov;
 
-		// Token: 0x040002A6 RID: 678
+		// Token: 0x0400009A RID: 154
 		public float _aimbotspeed;
 
-		// Token: 0x040002A7 RID: 679
+		// Token: 0x0400009B RID: 155
 		public bool _aimVisibleOnly;
 
-		// Token: 0x040002A8 RID: 680
+		// Token: 0x0400009C RID: 156
 		public float _aimbotY;
+
+		// Token: 0x04000239 RID: 569
+		private PlayerSkin[] enemy;
 	}
 }
